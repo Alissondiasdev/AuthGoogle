@@ -1,5 +1,6 @@
 import  Rotas from "./Routes/rotas";
-import AuthGoogleProvider from "./contexts/authGoogle";
+import AuthGoogleProvider from "./contexts/authProvider";
+
 
 
 
