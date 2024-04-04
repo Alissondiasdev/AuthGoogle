@@ -41,7 +41,6 @@ const CadastroProduto = ({ onFinish }) => {
             >
               <Input />
             </Form.Item>
-
           </Col>
 
 
@@ -67,27 +66,27 @@ const CadastroProduto = ({ onFinish }) => {
 
           </Col>
           <Form.Item label="Carregue a imagem" valuePropName="fileList" getValueFromEvent={normFile}>
-          <Upload action="/upload.do" listType="picture-card">
-            <button
-              style={{
-                border: 0,
-                background: 'none',
-              }}
-              type="button"
-            >
-              <PlusOutlined />
-              <div
+            <Upload action="/upload.do" listType="picture-card">
+              <button
                 style={{
-                  marginTop: 8,
+                  border: 0,
+                  background: 'none',
                 }}
+                type="button"
               >
-                (500x500)
-              </div>
-            </button>
-          </Upload>
-        </Form.Item>
+                <PlusOutlined />
+                <div
+                  style={{
+                    marginTop: 8,
+                  }}
+                >
+                  (500x500)
+                </div>
+              </button>
+            </Upload>
+          </Form.Item>
 
-         
+
 
 
         </Row>
@@ -95,7 +94,7 @@ const CadastroProduto = ({ onFinish }) => {
 
 
 
-      <div style={{display:'flex', gap: 10, justifyContent:'flex-end'}}>
+      <div style={{ display: 'flex', gap: 10, justifyContent: 'flex-end' }}>
         <Button type="primary" htmlType="submit">
           Cancelar
         </Button>

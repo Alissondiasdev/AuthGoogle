@@ -5,9 +5,8 @@ import { AuthGoogleContext } from "../../contexts/authProvider"
 import 'firebase/firestore'; // Importa módulo do Firestore do Firebase
 import { getFirestore, doc, getDoc } from 'firebase/firestore';
 import { app } from "../../services/firebaseConfig";
-import MainLayout from "../../componentes/main";
-import PreparoOrderCard from "../../componentes/preparoOrderCard";
-import ResponsiveAppBar from "../../componentes/appbar";
+import ResponsiveAppBar from "../../components/AppBar";
+import SideBar from "../../components/SideBar";
 
 export default function Home() {
     const { user, signOut } = useContext(AuthGoogleContext)
@@ -41,28 +40,15 @@ export default function Home() {
 
     return (
         <div>
-          
-           
-            
-
-          
               {user ? (
                 <div>
                     <ResponsiveAppBar photoURL={user.photoURL} displayName={user.displayName}/>
-                    <MainLayout
-                      
-                     
-                     
+                    <SideBar
                      clienteNome={user.nome}
                      clienteCPF={user.cpf}
                      planoAderido={user.plano_aderido}
                    />
-                    
-                    
                     <button onClick={() => signOut()}>sair</button>
-                    
-                    
-                   
                   </div>
                 ) : (
                   <button >Login com o Google</button>

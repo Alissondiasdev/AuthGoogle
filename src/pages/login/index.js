@@ -16,19 +16,13 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import AlertTitle from '@mui/material/AlertTitle';
-
-
 
 export default function Login() {
 
   const navigate = useNavigate();
 
-  const { signInGoogle, signed, email,setEmail, password, setPassword, login } = useContext(AuthGoogleContext);
+  const user = useContext(AuthGoogleContext);
   
-
-  
-
   function Copyright(props) {
     return (
       <Typography variant="body2" color="text.secondary" align="center" {...props}>
@@ -40,23 +34,22 @@ export default function Login() {
         {'.'}
       </Typography>
     );
-  }
+  };
 
   const defaultTheme = createTheme();
-
 
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    login(email, password);
+    user.login(user.email, user.password);
     navigate('/Home') 
   };
 
   async function handleLoginFromGoogle() {
     
-    await signInGoogle();
+    await user.signInGoogle();
   }
-  if (!signed) {
+  if (!user.signed) {
     return <div><ThemeProvider theme={defaultTheme}>
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -84,7 +77,7 @@ export default function Login() {
             name="email"
             autoComplete="email"
             autoFocus
-            value={email} onChange={(e) => setEmail(e.target.value)}
+            value={user.email} onChange={(e) => user.setEmail(e.target.value)}
           />
           <TextField
             margin="normal"
@@ -94,7 +87,7 @@ export default function Login() {
             label="Password"
             type="password"
             id="password"
-            value={password} onChange={(e) => setPassword(e.target.value)}
+            value={user.password} onChange={(e) => user.setPassword(e.target.value)}
             autoComplete="current-password"
           />
           <FormControlLabel

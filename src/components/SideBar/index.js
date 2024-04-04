@@ -1,24 +1,17 @@
 import React, { useContext, useState } from 'react';
 import {
-  ShoppingOutlined,  
-  HomeOutlined,  
-  
+  ShoppingOutlined,
+  HomeOutlined,
+
   LogoutOutlined, // Importe o ícone de logout
 } from '@ant-design/icons';
 import { Breadcrumb, Button, Input, Layout, Menu, theme } from 'antd';
 import RestaurantMenuOutlinedIcon from '@mui/icons-material/RestaurantMenuOutlined';
 import { AuthGoogleContext } from '../../contexts/authProvider';
-import ProductCard from '../card';
+import ProductCard from '../Card';
 import Produtos from '../produtos';
 import ComponenteTeste from '../componenteTeste';
 import OrderModal from '../modal';
-import CreateProduct from '../cadastroProduto';
-import FormComponent from '../cadastroProduto';
-
-
-
-
-
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -31,7 +24,7 @@ function getItem(label, key, icon, children) {
   };
 }
 
-const MainLayout = ({ displayName, photoURL }) => {
+const SideBar = ({ displayName, photoURL }) => {
   const { signOut } = useContext(AuthGoogleContext);
 
   const [open, setOpen] = useState(true);
@@ -49,20 +42,18 @@ const MainLayout = ({ displayName, photoURL }) => {
     signOut();
   };
 
- 
-
   const items = [
-    
     {
       key: 'home',
       icon: <HomeOutlined />,
       label: 'Home',
       onClick: () => setActiveKey('home'),
     },
-    getItem('Produtos', 'sub1', <RestaurantMenuOutlinedIcon style={{ fontSize: '16px' }}   />, [
-      getItem('Bebidas', '1'),
-      getItem('Pizzas Doces', '2'),
-      getItem('Pizzas salgadas', '3'),
+    getItem('Produtos', 'sub1', <RestaurantMenuOutlinedIcon style={{ fontSize: '16px' }} />, [
+      getItem('Gerenciar Produtos', '1'),
+      getItem('Bebidas', '2'),
+      getItem('Pizzas Doces', '3'),
+      getItem('Pizzas salgadas', '4'),
     ]),
 
     getItem('Cadastro', 'sub2', <RestaurantMenuOutlinedIcon style={{ fontSize: '16px' }} />, [
@@ -74,8 +65,13 @@ const MainLayout = ({ displayName, photoURL }) => {
       },
       getItem('Clientes', '2'),
     ]),
-        
-    
+    // CHAVES
+    {
+      key: 'Gerenciar',
+      icon: <ShoppingOutlined />,
+      label: 'Gerenciar',
+      onClick: () => setActiveKey('Gerenciar'),
+    },
     {
       key: 'ProductCard',
       icon: <ShoppingOutlined />,
@@ -88,7 +84,7 @@ const MainLayout = ({ displayName, photoURL }) => {
       label: 'Produtos',
       onClick: () => setActiveKey('Produtos'),
     },
-    
+
     {
       key: 'logout',
       icon: <LogoutOutlined />,
@@ -99,45 +95,33 @@ const MainLayout = ({ displayName, photoURL }) => {
 
   return (
     <>
-    
-    <Layout style={{ minHeight: '100vh' }}>
-      <Sider collapsible collapsed={collapsed} onCollapse={(value) => setCollapsed(value)} >
-        <div className="demo-logo-vertical" />
-        <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline" items={items} />
-      </Sider>
-      <Layout>
-        
-        <Content style={{ margin: '0 16px' }}>
-          
-          <div
-            style={{
-              padding: 24,
-              minHeight: 360,
-              background: colorBgContainer,
-              borderRadius: borderRadiusLG,
-            }}
-          >
-            
-            
-            
-            
-            
-            
-            {activeKey === 'ProductCard' && <ProductCard />}
-            {activeKey === 'Produtos' && <Produtos />}
-            {activeKey === 'Produtos1' && (<OrderModal teste={<FormComponent/>} visible={open}/>)}
-            
-          
-<ComponenteTeste/>
-          </div>
-        </Content>
-        <Footer style={{ textAlign: 'center' }}>
-         
-        </Footer>
+      <Layout style={{ minHeight: '100vh' }}>
+        <Sider collapsible collapsed={collapsed} onCollapse={(value) => setCollapsed(value)} >
+          <div className="demo-logo-vertical" />
+          <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline" items={items} />
+        </Sider>
+        <Layout>
+          <Content style={{ margin: '0 16px' }}>
+            <div
+              style={{
+                padding: 24,
+                minHeight: 360,
+                background: colorBgContainer,
+                borderRadius: borderRadiusLG,
+              }}
+            >
+              {activeKey === 'Gerenciar' && <Produtos />}
+              {activeKey === 'ProductCard' && <ProductCard />}
+              {activeKey === 'Produtos' && <Produtos />}
+              <ComponenteTeste />
+            </div>
+          </Content> 
+          <Footer style={{ textAlign: 'center' }}>
+          </Footer>
+        </Layout>
       </Layout>
-    </Layout>
     </>
   );
 };
 
-export default MainLayout;
+export default SideBar;

@@ -2,9 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { Space, Table, Tag, Button, Input, Select } from 'antd'; // Importe o Button do Ant Design
 import { getFirestore, collection, query, getDocs } from "firebase/firestore";
 import { app } from '../../services/firebaseConfig';
-import CadastroProduto from '../cadastroProduto';
+import CadastroProduto from '../CadastroProduto';
 
 const OPTIONS = ['Apples', 'Nails', 'Bananas', 'Helicopters'];
+
 
 const db = getFirestore(app);
 
