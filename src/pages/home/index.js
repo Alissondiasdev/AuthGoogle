@@ -6,6 +6,8 @@ import 'firebase/firestore'; // Importa módulo do Firestore do Firebase
 import { getFirestore, doc, getDoc } from 'firebase/firestore';
 import { app } from "../../services/firebaseConfig";
 import MainLayout from "../../componentes/main";
+import PreparoOrderCard from "../../componentes/preparoOrderCard";
+import ResponsiveAppBar from "../../componentes/appbar";
 
 export default function Home() {
     const { user, signOut } = useContext(AuthGoogleContext)
@@ -43,12 +45,14 @@ export default function Home() {
            
             
 
+          
               {user ? (
-                  <div>
+                <div>
+                    <ResponsiveAppBar photoURL={user.photoURL} displayName={user.displayName}/>
                     <MainLayout
                       
-                     displayName={user.displayName}
-                     photoURL={user.photoURL}
+                     
+                     
                      clienteNome={user.nome}
                      clienteCPF={user.cpf}
                      planoAderido={user.plano_aderido}

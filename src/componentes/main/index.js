@@ -5,11 +5,17 @@ import {
   
   LogoutOutlined, // Importe o ícone de logout
 } from '@ant-design/icons';
-import { Breadcrumb, Layout, Menu, theme } from 'antd';
+import { Breadcrumb, Button, Input, Layout, Menu, theme } from 'antd';
 import RestaurantMenuOutlinedIcon from '@mui/icons-material/RestaurantMenuOutlined';
 import { AuthGoogleContext } from '../../contexts/authProvider';
 import ProductCard from '../card';
+import Produtos from '../produtos';
 import ComponenteTeste from '../componenteTeste';
+import OrderModal from '../modal';
+import CreateProduct from '../cadastroProduto';
+import FormComponent from '../cadastroProduto';
+
+
 
 
 
@@ -28,6 +34,8 @@ function getItem(label, key, icon, children) {
 const MainLayout = ({ displayName, photoURL }) => {
   const { signOut } = useContext(AuthGoogleContext);
 
+  const [open, setOpen] = useState(true);
+
   const [collapsed, setCollapsed] = useState(false);
 
   const [activeKey, setActiveKey] = useState('1');
@@ -41,6 +49,8 @@ const MainLayout = ({ displayName, photoURL }) => {
     signOut();
   };
 
+ 
+
   const items = [
     
     {
@@ -50,9 +60,19 @@ const MainLayout = ({ displayName, photoURL }) => {
       onClick: () => setActiveKey('home'),
     },
     getItem('Produtos', 'sub1', <RestaurantMenuOutlinedIcon style={{ fontSize: '16px' }}   />, [
-      getItem('Bebidas', '3'),
-      getItem('Pizzas Doces', '4'),
-      getItem('Pizzas salgadas', '5'),
+      getItem('Bebidas', '1'),
+      getItem('Pizzas Doces', '2'),
+      getItem('Pizzas salgadas', '3'),
+    ]),
+
+    getItem('Cadastro', 'sub2', <RestaurantMenuOutlinedIcon style={{ fontSize: '16px' }} />, [
+      {
+        key: 'Produtos1',
+        icon: <ShoppingOutlined />,
+        label: 'Produtos1',
+        onClick: () => setActiveKey('Produtos1'),
+      },
+      getItem('Clientes', '2'),
     ]),
         
     
@@ -63,6 +83,13 @@ const MainLayout = ({ displayName, photoURL }) => {
       onClick: () => setActiveKey('ProductCard'),
     },
     {
+      key: 'Produtos',
+      icon: <ShoppingOutlined />,
+      label: 'Produtos',
+      onClick: () => setActiveKey('Produtos'),
+    },
+    
+    {
       key: 'logout',
       icon: <LogoutOutlined />,
       label: 'Sair',
@@ -71,18 +98,17 @@ const MainLayout = ({ displayName, photoURL }) => {
   ];
 
   return (
+    <>
+    
     <Layout style={{ minHeight: '100vh' }}>
-      <Sider collapsible collapsed={collapsed} onCollapse={(value) => setCollapsed(value)}>
+      <Sider collapsible collapsed={collapsed} onCollapse={(value) => setCollapsed(value)} >
         <div className="demo-logo-vertical" />
         <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline" items={items} />
       </Sider>
       <Layout>
-        <Header style={{ padding: 0, background: colorBgContainer }} />
+        
         <Content style={{ margin: '0 16px' }}>
-          <Breadcrumb style={{ margin: '16px 0' }}>
-            <Breadcrumb.Item>User</Breadcrumb.Item>
-            <Breadcrumb.Item>Bill</Breadcrumb.Item>
-          </Breadcrumb>
+          
           <div
             style={{
               padding: 24,
@@ -91,18 +117,18 @@ const MainLayout = ({ displayName, photoURL }) => {
               borderRadius: borderRadiusLG,
             }}
           >
-            Bem vindo!!! {displayName}
             
-            <img src={photoURL} alt="foto do usuário" />
-            <ComponenteTeste/>
+            
             
             
             
             
             {activeKey === 'ProductCard' && <ProductCard />}
+            {activeKey === 'Produtos' && <Produtos />}
+            {activeKey === 'Produtos1' && (<OrderModal teste={<FormComponent/>} visible={open}/>)}
             
           
-
+<ComponenteTeste/>
           </div>
         </Content>
         <Footer style={{ textAlign: 'center' }}>
@@ -110,6 +136,7 @@ const MainLayout = ({ displayName, photoURL }) => {
         </Footer>
       </Layout>
     </Layout>
+    </>
   );
 };
 

@@ -1,6 +1,6 @@
 import  Rotas from "./Routes/rotas";
 import AuthGoogleProvider from "./contexts/authProvider";
-
+import'../src/reset.css'
 
 
 

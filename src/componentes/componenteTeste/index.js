@@ -1,82 +1,76 @@
-
-import React, { useState } from 'react';
+import React from 'react';
+import { getFirestore, collection, addDoc } from 'firebase/firestore';
 import { app } from '../../services/firebaseConfig';
-import { getFirestore, collection, query, where, getDocs, addDoc } from "firebase/firestore";
+
 
 const db = getFirestore(app);
-const ComponenteTeste = () => {
-  const idCliente = "9ds8rZgDDVl9QePTVWps";
 
-// Suponha que você tenha informações sobre o pedido
-const novoPedido = {
-  itens: ["Hamburgues", "coca lata", "batata frita"],
-  status: "pendente",
-  total: 50.00,
-  data_pedido: new Date()
-};
-
-
-
-const [nomeCliente, setNomeCliente] = useState('laura rocha');
-const [pedidos, setPedidos] = useState([]);
-
-const handleBuscarPedidos = async () => {
+const enviarDadosParaFirestore = async (flavorCategories) => {
+    const db = getFirestore(app);
+    
     try {
-        const clienteQuery = query(collection(db, 'clientes'), where('nome', '==', nomeCliente));
-        const clienteSnapshot = await getDocs(clienteQuery);
+      // Iterar sobre as categorias de sabor
+      for (const category of flavorCategories) {
+        // Adicionar categoria à coleção 'categories' no Firestore
+        const categoryRef = await addDoc(collection(db, 'flavorCategories'), category);
+        console.log("Categoria adicionada com o ID: ", categoryRef.id);
         
-        
-  
-        if (!clienteSnapshot.empty) {
-          const clienteDoc = clienteSnapshot.docs[0];
-          const idCliente = clienteDoc.id;
-          const nomeCliente = clienteDoc.data().nome;
-          console.log('Cliente:', nomeCliente);
-          
-          
-          
-  
-          const pedidosQuery = query(collection(db, 'pedidos'), where('id_cliente', '==', idCliente));
-          
-          const pedidosSnapshot = await getDocs(pedidosQuery);
-         
-          
-          const pedidosData = pedidosSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-          console.log('Pedidos do Cliente:', pedidosData);
-          
-          setPedidos(pedidosData);
-         
-          
-        } else {
-          setPedidos([]);
+        // Iterar sobre os sabores dentro da categoria
+        for (const flavor of category.flavors) {
+          // Adicionar sabor à coleção 'flavors' no Firestore
+          await addDoc(collection(db, 'flavors'), flavor);
+          console.log("Sabor adicionado com sucesso!");
         }
-      } catch (error) {
-        console.error('Erro ao buscar pedidos:', error);
       }
-    };
+      console.log("Todos os dados foram enviados com sucesso para o Firebase Firestore!");
+    } catch (error) {
+      console.error("Erro ao enviar dados para o Firestore: ", error);
+    }
+  };
 
-// Adicione o novo pedido ao Firestore
-const addPedido = async () => {
-  try {
-    const docRef = await addDoc(collection(db, "pedidos"), {
-      id_cliente: idCliente,
-      ...novoPedido
-    });
-    console.log("Pedido adicionado com ID: ", docRef.id);
-  } catch (error) {
-    console.error("Erro ao adicionar pedido: ", error);
-  }
-};
-
-
-  return (
-    <div>
-      <button onClick={addPedido}>testar</button>
-      <button onClick={handleBuscarPedidos}>Buscar pedidos</button>
+const ComponenteTeste = () => {
+    const flavorCategories = [
+        {
+          "id": 23940,
+          "name": "TRADICIONAIS",
+          
+          "itens": [
+            {
+              "id": 378541,
+              "name": "ALHO FRITO",
+              "image": "vkOFWM6G9nXHN7h2VHa4mp1i2L0dkRe8C3tiTerx0BE6scYASE8fXJVPClzfoTKm",
+              "pizza_flavor_category_id": 23940,
+              "available": 1,
+              "description": "Molho especial, mussarela, alho frito, azeitona e orégano",
+              
+            },
+            {
+              "id": 378532,
+              "name": "BACON & MILHO",
+              "image": "ldstjJyVuCf36RKXdOtsIME2ZQ4eiTSxQ2PUBwAawhDS8EWbpyLCeDp3mcx1YqgL",
+              "pizza_flavor_category_id": 23940,
+              "available": 1,
+              "description": "Molho especial, mussarela, bacon, milho, azeitona e orégano",
+              
+            },
+            // Adicione os outros sabores aqui...
+          ]
+        },
+        // Adicione outras categorias aqui...
+      ];
+    
+      // Chamar a função para enviar os dados para o Firestore
       
-    </div>
-  );
+    
+    
+      
+      
+    return (
+        <div>
+            <button onClick={() => enviarDadosParaFirestore(flavorCategories)}>enviar dados</button>
+           
+        </div>
+    );
 };
-
 
 export default ComponenteTeste;
